@@ -1,0 +1,42 @@
+Power Requirements for Downhole Pressure Logger
+
+PowerOn = Vcc*(I_MCU_Active + I_Pressure_Active + I_EEPROM_Active)/ConverterEff
+
+PowerIdle = Vcc*(I_MCU_Idle + I_Pressue_Idle + I_EEPROM_Active)/ConverterEff
+
+PowerAvg = (PowerOn*TimeOn + PowerIdle*TimeOff)/(TimeOn + TimeOff)
+
+Time = PowerAvg/BatteryCapacity
+
+////////SIZE OF EEPROM
+
+RecPeriodsPerYear = 525600/RecPeriod //Number of records per year is number of minutes per year divided by number of minutes between samples
+
+SizeOfData = RecPeriodsPerYear*20 [bits]
+
+Bits required for data storage = 20 bits per sample = 0-1048576 (with a max value of 600000)
+
+.00088
+.144
+
+////////SWITCH MODE VS. LINEAR
+
+SwitchModePower = SysPower*Eff_Switch + ConventerQuiessentCurrent*Vin
+
+LinearPower = SysPower*Eff_Linear + LinearQuiessentCurrent*Vin
+
+SwitchMode Unit = TPS62120
+Linear Unit = TPS79718
+
+SysPower = 106uW
+
+Eff_Switch = ~70%
+ConverterQUiessentCurrent = 13uA
+
+Eff_Linear = ~60%
+LinearQuiessentCurrent = 1.2uA
+
+SwitchModePower = 106*.7 + 13*3 = 74.2 + 39 = 113.2 uW
+LinearPower = 106*.6 + 1.2*3 = 63.6 + 3.6 = 67.2 uW // 68% better than switch mode
+
+//Note to self, may Ned Mohan forgive me...
